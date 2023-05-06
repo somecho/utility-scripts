@@ -1,6 +1,6 @@
 #!/usr/bin/env bb
 (require '[clojure.java.shell :refer [sh]]
-         '[clojure.string :refer [split includes? join]])
+         '[clojure.string :refer [split includes?]])
 
 (defn drop-extension [filename]
   (first (split filename #"\.")))
