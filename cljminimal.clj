@@ -25,5 +25,3 @@
                      "try this:"
                      (str "cd " project-name)
                      "clj -X core/-main"]))
-
-
