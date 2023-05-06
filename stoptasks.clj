@@ -23,6 +23,3 @@
     (doall))
 
 (println "Tasks stopped")
-
-
-
