@@ -1,6 +1,0 @@
-#!/usr/bin/bash
-#Creates a task and starts it.
-
-SUCCESS=$(task add $@)
-ID=$(($(echo "$SUCCESS" | awk '{print substr($NF,1,length($NF)-1)}')))
-task $ID start
