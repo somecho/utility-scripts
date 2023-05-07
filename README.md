@@ -3,10 +3,10 @@
 Here are some utility scripts I wrote for myself. At first I wrote the scripts in a shell scripting language. But then I discovered [Babashka](https://github.com/babashka/babashka) and I love Clojure. I decided to port all the scripts to Clojure instead. You will need [Babashka](https://github.com/babashka/babashka) to run these scripts. These are helper tools for [Clj](https://clojure.org/guides/deps_and_cli), [Ledger](https://github.com/ledger/ledger) and [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior).
 
 ### [Scripts](#scripts) included:
-- [cljminimal](#cljminimal) - creates an ultra barebones deps.edn [clj](https://clojure.org/guides/deps_and_cli) project for quick hacking
-- [keepbooks](#keepbooks) - simple transaction entry helper for [Ledger](https://github.com/ledger/ledger) CLI accounting
-- [startnewtask](#startnewtask) - creates and starts a new [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) task
-- [stoptasks](#stoptasks) - stops all active [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) tasks
+1. [cljminimal](#cljminimal) - creates an ultra barebones deps.edn [clj](https://clojure.org/guides/deps_and_cli) project for quick hacking
+2. [keepbooks](#keepbooks) - simple transaction entry helper for [Ledger](https://github.com/ledger/ledger) CLI accounting
+3. [startnewtask](#startnewtask) - creates and starts a new [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) task
+4. [stoptasks](#stoptasks) - stops all active [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) tasks
 ## Installation
 You need to first [install Babashka](https://github.com/babashka/babashka#quickstart). 
  ```sh
@@ -25,25 +25,19 @@ You need to first [install Babashka](https://github.com/babashka/babashka#quicks
 A script to create an ultraminimal clj project with an empty deps.edn and a singular hello world main function. To use, simply call `cljminimal my-minimal-clj-project` and a project called `my-minimal-clj-project` will be created for you. Mainly used for quick hacking and throwaway prototyping.
 
 ### [keepbooks](./keepbooks.clj)
-A helper script to enter a transaction into a [Ledger](https://github.com/ledger/ledger) file. The script has the following format:
+A helper script to enter a simple transaction into a [Ledger](https://github.com/ledger/ledger) file. The script has the following format:
 ```sh
-keepbooks -f LEDGERFILE DATE PAYEE ACCOUNT_TO_DEBIT ACCOUNT_TO_CREDIT AMOUNT CURRENCY
+keepbooks -f LEDGERFILE -d DATE PAYEE? ACCOUNT_TO_DEBIT ACCOUNT_TO_CREDIT AMOUNT CURRENCY
 ```
-You can ommit the `DATE` field. You can also ommit both `DATE` and `PAYEE` fields, but you _cannot_ ommit the `PAYEE` field and not the `DATE` field. Valid commands:
+The `-d DATE` field is optional. If this flag is ommitted, the current date will be used. The `PAYEE` field is also optional. If the `PAYEE` is ommitted, no payee will be entered in the transaction. The other fields `ACCOUNT_TO_DEBIT`, `ACCOUNT_TO_CREDIT`, `AMOUNT` and `CURRENCY` are required fields. The ordering is strict. Upon entering a successful command, the ledger entry will be written into the ledger file provided and also printed out in the commandline.
 ```sh
-keepbooks -f LEDGERFILE DATE PAYEE ACCOUNT_TO_DEBIT ACCOUNT_TO_CREDIT AMOUNT CURRENCY
-keepbooks -f LEDGERFILE PAYEE ACCOUNT_TO_DEBIT ACCOUNT_TO_CREDIT AMOUNT CURRENCY # date ommitted
-keepbooks -f LEDGERFILE ACCOUNT_TO_DEBIT ACCOUNT_TO_CREDIT AMOUNT CURRENCY # date AND payee ommitted
-```
-Upon entering a successful command, the ledger entry will be written into the ledger file provided and also printed out in the commandline.
-```sh
-keepbooks -f 2023.ledger 2023/07/20 Sushi Expenses:Restaurant Assets:Bank 30.00 EUR
+keepbooks -f 2023.ledger -d 2023/07/20 Sushi Bar Expenses:Restaurant Assets:Bank 30.00 EUR
 # prints out:
-# 2023/07/20 Sushi
-#  Expenses:Restaurant                       30.00 EUR
-#  Assets:Bank
+# 2023/07/20 Sushi Bar
+#   Expenses:Restaurant                       30.00 EUR
+#   Assets:Bank
 ```
-At the moment, the payee field cannot contain spaces [#1](https://github.com/somecho/utility-scripts/issues/1). 
+
 ### [startnewtask](./startnewtask.clj)
 Creates and immediately starts a [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) task. Use this as you would `task add`.
 ```sh
@@ -65,3 +59,4 @@ Stops all active [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarri
 - [2ec63e7](https://github.com/somecho/utility-scripts/commit/2ec63e7e77a2adb9f3b2e22090f85a911868f238) - added [uninstall](https://github.com/somecho/utility-scripts/blob/2ec63e7e77a2adb9f3b2e22090f85a911868f238/uninstall-some-utils.clj) script
 - [f1d42f7](https://github.com/somecho/utility-scripts/commit/f1d42f7bc172d9ffdf51419d17b5d7792dabe70e) - removed the [uninstall](https://github.com/somecho/utility-scripts/blob/2ec63e7e77a2adb9f3b2e22090f85a911868f238/uninstall-some-utils.clj) script in favor of a programmatically created uninstall script. Installing these scripts now automatically creates `uninstall-some-scripts`.
 - [a020b2a](https://github.com/somecho/utility-scripts/commit/a020b2aba3fdbcc132e53df2b4859d5aab88e9f1) - added [keepbooks](./keepbooks.clj)
+- [2d46c23](https://github.com/somecho/utility-scripts/commit/2d46c233a158950a3b2860f405a7dfb81484e06e) - fix [#1](https://github.com/somecho/utility-scripts/issues/1)
