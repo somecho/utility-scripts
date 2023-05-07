@@ -18,7 +18,8 @@
                 (:out)
                 (split #"\n"))
       cljfiles (filter #(includes? % ".clj") files)
-      scripts (filter #(not= % "install.clj") cljfiles)
+      scripts (filter #(and (not= % "install.clj")
+                            (not= % "on-modify-log.clj")) cljfiles)
       extensionless  (vec (map drop-extension scripts))
       home (System/getProperty "user.home")
       path "/.local/bin/"
