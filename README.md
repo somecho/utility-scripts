@@ -2,6 +2,11 @@
 
 Here are some utility scripts I wrote for myself. At first I wrote the scripts in a shell scripting language. But then I discovered [Babashka](https://github.com/babashka/babashka) and I love Clojure. I decided to port all the scripts to Clojure instead. You will need [Babashka](https://github.com/babashka/babashka) to run these scripts. These are helper tools for [Clj](https://clojure.org/guides/deps_and_cli), [Ledger](https://github.com/ledger/ledger) and [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior).
 
+### [Scripts](#scripts) included:
+- [cljminimal](#cljminimal) - creates an ultra barebones deps.edn [clj](https://clojure.org/guides/deps_and_cli) project for quick hacking
+- [keepbooks](#keepbooks) - simple transaction entry helper for [Ledger](https://github.com/ledger/ledger) CLI accounting
+- [startnewtask](#startnewtask) - creates and starts a new [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) task
+- [stoptasks](#stoptasks) - stops all active [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) tasks
 ## Installation
 You need to first [install Babashka](https://github.com/babashka/babashka#quickstart). 
  ```sh
@@ -14,7 +19,8 @@ You need to first [install Babashka](https://github.com/babashka/babashka#quicks
 ### Uninstalling
  To uninstall, simply call `uninstall-some-scripts` and all the scripts will be deleted from `~/.local/bin`.
  
- ## Scripts
+## Scripts
+ 
 ### [cljminimal](./cljminimal.clj)
 A script to create an ultraminimal clj project with an empty deps.edn and a singular hello world main function. To use, simply call `cljminimal my-minimal-clj-project` and a project called `my-minimal-clj-project` will be created for you. Mainly used for quick hacking and throwaway prototyping.
 
