@@ -66,7 +66,6 @@
     (mapv #(%1 %2) (take-last num-args rules) args)))
 
 ; transaction builder
-
 (defn fill-args [args]
   (let [num-args (count args)]
     (concat (repeat (- 6 num-args) nil) args)))
