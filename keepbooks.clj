@@ -3,7 +3,8 @@
          '[clojure.string :as str])
 
 (def spec {:alias {:f :filepath
-                   :b :batch}})
+                   :b :batch}
+           :require [:filepath]})
 
 ; Mode checkers
 (defn single-entry? [args]
@@ -24,9 +25,7 @@
     (catch Exception _ false)))
 
 (defn valid-amount? [amt]
-  (let [parts (str/split amt #" ")]
-    (and (= (count parts) 2)
-         (string-is-number? (first parts)))))
+  (string-is-number? amt))
 
 (defn valid-date? [date]
   (let [components (str/split date #"/")]
@@ -39,29 +38,17 @@
 ; Validators
 (defn validate-string [s]
   (when-not (clean-string? s)
-    (throw (Exception. "String contains invalid character ';'"))))
+    (throw (Exception. (str s " contains invalid character ';'")))))
 
 (defn validate-date [date]
   (validate-string date)
   (when-not (valid-date? date)
-    (throw (Exception. "Date is invalid!"))))
+    (throw (Exception. (str date " is an invalid date")))))
 
 (defn validate-amount [amt]
   (validate-string amt)
   (when-not (valid-amount? amt)
-    (throw (Exception. "Invalid amount."))))
-
-;for testing
-(def cmds [["-f" "2023.ledger" "2023/05/23" "McDonald's" "Expenses:Food" "Assets:Bank" "10.00 EUR"]
-           ["-f" "2023.ledger" "-b" "txns.csv"]
-           ["-f" "2023.ledger"]
-           ["-f" "2023.ledger" "2023/05/23" "McDonald's" "Expenses:Food" "Assets:Bank" "10.00 EUR" "extra:args"]
-           ["-f" "2023.ledger" "2023/05/23" "McDonald's"]
-           ["-f" "2023.ledger" "2023;05/23" "McDonald's" "Expenses:Food" "Assets:Bank" "10.00 EUR"]
-           ["-f" "2023.ledger" "2023/05/23" "McDo;nald's" "Expenses:Food" "Assets:Bank" "10.00 EUR"]
-           ["-f" "2023.ledger" "2023/05/23" "McDonald's" "Expenses:;Food" "Assets:Bank" "10.00 EUR"]
-           ["-f" "2023.ledger" "2023/05/23" "McDonald's" "Expenses:Food" "Assets:;Bank" "10.00 EUR"]
-           ["-f" "2023.ledger" "2023/05/23" "McDonald's" "Expenses:Food" "Assets:Bank" "10.00EUR"]])
+    (throw (Exception. (str amt " is an invalid amount")))))
 
 (defn validate-single-txn [txn]
   (let [args (:args txn)
@@ -70,25 +57,55 @@
                validate-string
                validate-string
                validate-string
-               validate-amount]]
-    (when (> num-args 5)
+               validate-amount
+               validate-string]]
+    (when (> num-args 6)
       (throw (Exception. "Too many arguments!")))
-    (when (< num-args 3)
+    (when (< num-args 4)
       (throw (Exception. "There are some missing arguments.")))
-    (map #(%1 %2) (take-last num-args rules) args)))
+    (mapv #(%1 %2) (take-last num-args rules) args)))
+
+; transaction builder
+
+(defn fill-args [args]
+  (let [num-args (count args)]
+    (concat (repeat (- 6 num-args) nil) args)))
+
+(defn today
+  "Creates a string in a format compatible with ledger"
+  []
+  (let [date (java.util.Date.)
+        year (+ 1900 (.getYear date))
+        month (inc (.getMonth date))
+        day (.getDate date)]
+    (str/join "/" [year month day])))
+
+(defn format-txn [account amount currency]
+  (let [account-length (count account)
+        amount-length (count amount)
+        currency-length (count currency)
+        whitespace-length (- 50 (+ account-length amount-length currency-length))]
+    (str "  " account (str/join "" (repeat whitespace-length " ")) amount " " currency)))
+
+(defn build-txn [args]
+  (let [date (if (first args) (first args) (today))
+        payee (if (second args) (second args) "")
+        line1 (str/join " " [date payee])
+        line2 (format-txn (nth args 2) (nth args 4) (nth args 5))
+        line3 (str "  "  (nth args 3))]
+    (str/join "\n" ["" line1 line2 line3 ""])))
 
 (defn single-entry-txn [txn]
-  (validate-single-txn txn))
+  (validate-single-txn txn)
+  (let [args (fill-args (:args txn))
+        path (:filepath (:opts txn))
+        ledger-entry (build-txn args)]
+    (println ledger-entry)
+    (spit path ledger-entry :append true)))
 
-(let [parsed (cli/parse-args (get cmds 0) spec)]
+; entry point
+(let [parsed (cli/parse-args *command-line-args* spec)]
   (cond
     (single-entry? parsed) (single-entry-txn parsed)
-    (batch? parsed) (println "batch-entry")
-    (interactive? parsed) (println "interactive")))
-
-
-
-
-
-
-
+    (batch? parsed) (println "batch-entry coming soon!")
+    (interactive? parsed) (println "interactive entry coming soon!")))
