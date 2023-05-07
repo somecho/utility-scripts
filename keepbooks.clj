@@ -48,21 +48,6 @@
   (when-not (valid-amount? amt)
     (throw (Exception. (str amt " is an invalid amount")))))
 
-(defn validate-single-txn [txn]
-  (let [args (:args txn)
-        num-args (count args)
-        rules [validate-date
-               validate-string
-               validate-string
-               validate-string
-               validate-amount
-               validate-string]]
-    (when (> num-args 6)
-      (throw (Exception. "Too many arguments!")))
-    (when (< num-args 4)
-      (throw (Exception. "There are some missing arguments.")))
-    (mapv #(%1 %2) (take-last num-args rules) args)))
-
 (defn validate-txn [txn]
   (validate-date (:date txn))
   (mapv validate-string (:payee txn))
