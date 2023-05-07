@@ -3,7 +3,8 @@
          '[clojure.string :as str])
 
 (def spec {:alias {:f :filepath
-                   :b :batch}
+                   :b :batch
+                   :d :date}
            :require [:filepath]})
 
 ; Mode checkers
@@ -32,12 +33,9 @@
     (and (= (count components) 3)
          (every? true? (map string-is-number? components)))))
 
-(defn clean-string? [s]
-  (not (str/includes? s ";")))
-
 ; Validators
 (defn validate-string [s]
-  (when-not (clean-string? s)
+  (when (str/includes? s ";")
     (throw (Exception. (str s " contains invalid character ';'")))))
 
 (defn validate-date [date]
@@ -65,11 +63,15 @@
       (throw (Exception. "There are some missing arguments.")))
     (mapv #(%1 %2) (take-last num-args rules) args)))
 
-; transaction builder
-(defn fill-args [args]
-  (let [num-args (count args)]
-    (concat (repeat (- 6 num-args) nil) args)))
+(defn validate-txn [txn]
+  (validate-date (:date txn))
+  (mapv validate-string (:payee txn))
+  (validate-string (:debit txn))
+  (validate-string (:credit txn))
+  (validate-amount (:amount txn))
+  (validate-string (:currency txn)))
 
+; transaction builder
 (defn today
   "Creates a string in a format compatible with ledger"
   []
@@ -86,21 +88,40 @@
         whitespace-length (- 50 (+ account-length amount-length currency-length))]
     (str "  " account (str/join "" (repeat whitespace-length " ")) amount " " currency)))
 
-(defn build-txn [args]
-  (let [date (if (first args) (first args) (today))
-        payee (if (second args) (second args) "")
-        line1 (str/join " " [date payee])
-        line2 (format-txn (nth args 2) (nth args 4) (nth args 5))
-        line3 (str "  "  (nth args 3))]
+(defn build-txn [parsed-args]
+  (let [args (:args parsed-args)
+        num-args (count args)
+        date (if (:date (:opts parsed-args))
+               (:date (:opts parsed-args))
+               (today))
+        payee (drop-last 4 args)
+        debit (nth args (- num-args 4))
+        credit (nth args (- num-args 3))
+        amount (nth args (- num-args 2))
+        currency (nth args (- num-args 1))]
+    {:date date
+     :payee payee
+     :debit debit
+     :credit credit
+     :amount amount
+     :currency currency}))
+
+(defn build-entry [txn]
+  (let [payee (str/join " " (:payee txn))
+        line1 (str/join " " [(:date txn) payee])
+        line2 (format-txn (:debit txn) (:amount txn) (:currency txn))
+        line3 (str "  " (:credit txn))]
     (str/join "\n" ["" line1 line2 line3 ""])))
 
-(defn single-entry-txn [txn]
-  (validate-single-txn txn)
-  (let [args (fill-args (:args txn))
-        path (:filepath (:opts txn))
-        ledger-entry (build-txn args)]
-    (println ledger-entry)
-    (spit path ledger-entry :append true)))
+(defn single-entry-txn [parsed-args]
+  (when (< (count (:args parsed-args)) 4)
+    (throw (Exception. "Not enough arguments to make an entry.")))
+  (let [path (:filepath (:opts parsed-args))
+        txn (build-txn parsed-args)
+        entry (build-entry txn)]
+    (validate-txn txn)
+    (spit path entry :append true)
+    (println entry)))
 
 ; entry point
 (let [parsed (cli/parse-args *command-line-args* spec)]
