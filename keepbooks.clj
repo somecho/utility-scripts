@@ -5,6 +5,7 @@
 (def spec {:alias {:f :filepath
                    :b :batch}})
 
+; Mode checkers
 (defn single-entry? [args]
   (and (not-empty (:args args))
        (not (contains? (:opts args) :batch))))
@@ -15,6 +16,8 @@
 
 (defn batch? [args]
   (contains? (:opts args) :batch))
+
+; Argument checkers
 (defn string-is-number? [s]
   (try
     (number? (Float/parseFloat s))
@@ -33,6 +36,7 @@
 (defn clean-string? [s]
   (not (str/includes? s ";")))
 
+; Validators
 (defn validate-string [s]
   (when-not (clean-string? s)
     (throw (Exception. "String contains invalid character ';'"))))
@@ -72,8 +76,6 @@
     (when (< num-args 3)
       (throw (Exception. "There are some missing arguments.")))
     (map #(%1 %2) (take-last num-args rules) args)))
-
-(validate-single-txn (cli/parse-args (get cmds 3) spec))
 
 (defn single-entry-txn [txn]
   (validate-single-txn txn))
