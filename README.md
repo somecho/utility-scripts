@@ -5,8 +5,10 @@ Here are some utility scripts I wrote for myself. At first I wrote the scripts i
 ### [Scripts](#scripts) included:
 1. [cljminimal](#cljminimal) - creates an ultra barebones deps.edn [clj](https://clojure.org/guides/deps_and_cli) project for quick hacking
 2. [keepbooks](#keepbooks) - simple transaction entry helper for [Ledger](https://github.com/ledger/ledger) CLI accounting
-3. [startnewtask](#startnewtask) - creates and starts a new [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) task
-4. [stoptasks](#stoptasks) - stops all active [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) tasks
+3. [on-modify-log](#on-modify-log) - a [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) hook to log the latest modified task
+4. [resumetask](#resumetask) - resumes latest modified [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) task
+5. [startnewtask](#startnewtask) - creates and starts a new [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) task
+6. [stoptasks](#stoptasks) - stops all active [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) tasks
 ## Installation
 You need to first [install Babashka](https://github.com/babashka/babashka#quickstart). 
  ```sh
@@ -37,6 +39,14 @@ keepbooks -f 2023.ledger -d 2023/07/20 Sushi Bar Expenses:Restaurant Assets:Bank
 #   Expenses:Restaurant                       30.00 EUR
 #   Assets:Bank
 ```
+### [on-modify-log](./on-modify-log.clj)
+A [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) hook to log latest modified task. This script is _not_ installed in `~/.local/bin`. Instead, it requires you to copy it to your Taskwarrior's hooks folder. This is usually `~/.task/hooks`. Every time a task is modified, it writed the UUID of the task in a file called `last-modified.data` in your Taskwarrior's `data.location`. **This hook is required for the [resumetask](#resumetask) script to work.**
+
+### [resumetask](./resumetask.clj)
+Ever wanted to just restart the [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) task you stopped right before a break? With this script, you can just pick up where you left off by calling `resumetask`. No more trying to figure what ID your task has! **This script requires the [on-modify-log](#on-modify-log) hook to work. 
+
+#### Why use hooks?
+Some people suggest having a shell alias that starts a task and exports it as an environment variable. But since I use [Syncthing](https://github.com/syncthing/syncthing) to sync my tasks across devices, this will not work if I stopped a task on one device and want to resume it on another. By saving the last modified task's UUID in Taskwarrior's `data.location`, I can have the UUID synced as well.
 
 ### [startnewtask](./startnewtask.clj)
 Creates and immediately starts a [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) task. Use this as you would `task add`.
@@ -60,3 +70,4 @@ Stops all active [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarri
 - [f1d42f7](https://github.com/somecho/utility-scripts/commit/f1d42f7bc172d9ffdf51419d17b5d7792dabe70e) - removed the [uninstall](https://github.com/somecho/utility-scripts/blob/2ec63e7e77a2adb9f3b2e22090f85a911868f238/uninstall-some-utils.clj) script in favor of a programmatically created uninstall script. Installing these scripts now automatically creates `uninstall-some-scripts`.
 - [a020b2a](https://github.com/somecho/utility-scripts/commit/a020b2aba3fdbcc132e53df2b4859d5aab88e9f1) - added [keepbooks](./keepbooks.clj)
 - [2d46c23](https://github.com/somecho/utility-scripts/commit/2d46c233a158950a3b2860f405a7dfb81484e06e) - fix [#1](https://github.com/somecho/utility-scripts/issues/1)
+- [a7c0817](https://github.com/somecho/utility-scripts/commit/a7c081747dc0ec4404f6a17dc3f9141316cdc534) - added [on-modify-log](./on-modify-log.clj) Taskwarrior hook, [resumetask](./resumetask.clj) and updated [install](./install.clj) script
