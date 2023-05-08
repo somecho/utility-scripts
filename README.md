@@ -9,6 +9,8 @@ Here are some utility scripts I wrote for myself. At first I wrote the scripts i
 4. [resumetask](#resumetask) - resumes latest modified [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) task
 5. [startnewtask](#startnewtask) - creates and starts a new [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) task
 6. [stoptasks](#stoptasks) - stops all active [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) tasks
+7. [taskinfo](#taskinfo) - prints the attribute of a [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) task
+ 
 ## Installation
 You need to first [install Babashka](https://github.com/babashka/babashka#quickstart). 
  ```sh
@@ -58,6 +60,13 @@ startnewtask +admin +bookkeeping track finance # adds and starts task
 
 Stops all active [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) tasks. Every tried `task stop` and gotten an error? Yeah, me too. Now you can stop all active tasks with a single `stoptasks`.
 
+### [taskinfo](./taskinfo.clj)
+
+Prints the attribute of a [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) task. Commands follow this format:
+```sh
+taskinfo TASKID TASKATTRIBUTE
+# example: taskinfo 40 description
+```
 ## Change log
 - [584d3d0](https://github.com/somecho/utility-scripts/commit/584d3d04b3d9d2a9d1fdd79789e7c4908daa40be) - added [create-clj-minimal](https://github.com/somecho/utility-scripts/blob/41de9d4fd0103c7b1cefa4b47439054353a59a91/create-clj-minimal) shell script
 - [4b8c492](https://github.com/somecho/utility-scripts/commit/4b8c492ecd1725646dbff502a19a77cc73c52747) - added [stoptasks](https://github.com/somecho/utility-scripts/blob/41de9d4fd0103c7b1cefa4b47439054353a59a91/stoptasks) shell script
@@ -71,3 +80,4 @@ Stops all active [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarri
 - [a020b2a](https://github.com/somecho/utility-scripts/commit/a020b2aba3fdbcc132e53df2b4859d5aab88e9f1) - added [keepbooks](./keepbooks.clj)
 - [2d46c23](https://github.com/somecho/utility-scripts/commit/2d46c233a158950a3b2860f405a7dfb81484e06e) - fix [#1](https://github.com/somecho/utility-scripts/issues/1)
 - [a7c0817](https://github.com/somecho/utility-scripts/commit/a7c081747dc0ec4404f6a17dc3f9141316cdc534) - added [on-modify-log](./on-modify-log.clj) Taskwarrior hook, [resumetask](./resumetask.clj) and updated [install](./install.clj) script
+- [f2b0214](https://github.com/somecho/utility-scripts/commit/f2b021434554a3491c5cf07aced3a33479e662d1) - added [taskinfo](./taskinfo.clj) 
