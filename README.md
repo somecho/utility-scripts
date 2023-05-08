@@ -45,7 +45,7 @@ keepbooks -f 2023.ledger -d 2023/07/20 Sushi Bar Expenses:Restaurant Assets:Bank
 A [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) hook to log latest modified task. This script is _not_ installed in `~/.local/bin`. Instead, it requires you to copy it to your Taskwarrior's hooks folder. This is usually `~/.task/hooks`. Every time a task is modified, it writed the UUID of the task in a file called `last-modified.data` in your Taskwarrior's `data.location`. **This hook is required for the [resumetask](#resumetask) script to work.**
 
 ### [resumetask](./resumetask.clj)
-Ever wanted to just restart the [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) task you stopped right before a break? With this script, you can just pick up where you left off by calling `resumetask`. No more trying to figure what ID your task has! **This script requires the [on-modify-log](#on-modify-log) hook to work. 
+Ever wanted to just restart the [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) task you stopped right before a break? With this script, you can just pick up where you left off by calling `resumetask`. No more trying to figure what ID your task has! **This script requires the [on-modify-log](#on-modify-log) hook to work and the [taskinfo](#taskinfo) script to work.**
 
 #### Why use hooks?
 Some people suggest having a shell alias that starts a task and exports it as an environment variable. But since I use [Syncthing](https://github.com/syncthing/syncthing) to sync my tasks across devices, this will not work if I stopped a task on one device and want to resume it on another. By saving the last modified task's UUID in Taskwarrior's `data.location`, I can have the UUID synced as well.
@@ -57,16 +57,16 @@ task add +admin +bookkeeping track finance # adds a task to Taskwarrior
 startnewtask +admin +bookkeeping track finance # adds and starts task
 ```
 ### [stoptasks](./stoptasks.clj)
-
 Stops all active [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) tasks. Every tried `task stop` and gotten an error? Yeah, me too. Now you can stop all active tasks with a single `stoptasks`.
 
 ### [taskinfo](./taskinfo.clj)
-
 Prints the attribute of a [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) task. Commands follow this format:
 ```sh
 taskinfo TASKID TASKATTRIBUTE
 # example: taskinfo 40 description
 ```
+The [resumetask](#resumetask) script depends on this script.
+
 ## Change log
 - [584d3d0](https://github.com/somecho/utility-scripts/commit/584d3d04b3d9d2a9d1fdd79789e7c4908daa40be) - added [create-clj-minimal](https://github.com/somecho/utility-scripts/blob/41de9d4fd0103c7b1cefa4b47439054353a59a91/create-clj-minimal) shell script
 - [4b8c492](https://github.com/somecho/utility-scripts/commit/4b8c492ecd1725646dbff502a19a77cc73c52747) - added [stoptasks](https://github.com/somecho/utility-scripts/blob/41de9d4fd0103c7b1cefa4b47439054353a59a91/stoptasks) shell script
