@@ -34,12 +34,24 @@
                          (str/replace "~" home))]
     datalocation))
 
+(defn validate-task
+  "Validate if task is not complete"
+  [uuid]
+  (if (-> (sh/sh "taskinfo" uuid "status")
+          (:out)
+          (str/replace "\n" "")
+          (= "completed"))
+    (do (println "Task is already completed.")
+        (System/exit 1))
+    uuid))
+
 (let [data-path (get-taskwarrior-data-location)
       modified-path (str data-path "/last-modified.data")]
   (when-not (.exists (io/file modified-path))
     (println "No last modified data. Have you installed and used the hook?")
     (System/exit 1))
   (-> (slurp modified-path)
+      (validate-task)
       (as-> id (sh/sh "task" id "start"))
       (:out)
       (println)))
