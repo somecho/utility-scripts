@@ -34,31 +34,12 @@
                          (str/replace "~" home))]
     datalocation))
 
-(defn get-task-id [uuid]
-  (let [stdout (sh/sh "task" uuid)
-        id-line (-> (:out stdout)
-                    (str/split #"\n")
-                    (nth 3))]
-    (when-not (str/includes? id-line "ID")
-      (println "Task with UUID" uuid "does not exist"))
-    (when (-> (:out stdout)
-              (str/split #"\n")
-              (nth 5)
-              (str/split #" ")
-              (last)
-              (= "Completed"))
-      (println "Task with" uuid "is already completed"))
-    (-> (str/split id-line #" ")
-        (as-> c (filter not-empty c))
-        (last))))
-
 (let [data-path (get-taskwarrior-data-location)
       modified-path (str data-path "/last-modified.data")]
   (when-not (.exists (io/file modified-path))
     (println "No last modified data. Have you installed and used the hook?")
     (System/exit 1))
   (-> (slurp modified-path)
-      (get-task-id)
       (as-> id (sh/sh "task" id "start"))
       (:out)
       (println)))
