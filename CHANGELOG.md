@@ -16,4 +16,4 @@
 - [fd7b165](../../commit/fd7b165136f06fcd8c018401942c008ba0a261da) - added [projectsof](./projectsof.clj)
 - [371c1ea](../../commit/371c1ea57bf5ebf3da98423552edba18d66f6957) - added clj to [projectsof](./projectsof.clj) and numbered output
 - [00520bf](../../commit/00520bf253a05fdcd2253c10b61be33b4c363cfa) - implemented feature [#3](../../issues/3) interactive entry to [keepbooks](./keepbooks.clj)
-- [f5ceb36](../../commit/f5ceb365150694ab86475a344da9c16946852b90) - [2.7.0](../../releases/tags/2.7.0) added [accountsof](./accountsof.clj) 
+- [f5ceb36](../../commit/f5ceb365150694ab86475a344da9c16946852b90) - [2.7.0](../../releases/tag/2.7.0) added [accountsof](./accountsof.clj) 
