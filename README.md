@@ -7,10 +7,11 @@ Here are some utility scripts I wrote for myself. At first I wrote the scripts i
 2. [jrun](#jrun) - single file Java runner 
 3. [keepbooks](#keepbooks) - simple transaction entry helper for [Ledger](https://github.com/ledger/ledger) CLI accounting
 4. [on-modify-log](#on-modify-log) - a [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) hook to log the latest modified task
-5. [resumetask](#resumetask) - resumes latest modified [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) task
-6. [startnewtask](#startnewtask) - creates and starts a new [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) task
-7. [stoptasks](#stoptasks) - stops all active [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) tasks
-8. [taskinfo](#taskinfo) - prints the attribute of a [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) task
+5. [projectsof](#projectsof) - finds directories of certain project types
+6. [resumetask](#resumetask) - resumes latest modified [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) task
+7. [startnewtask](#startnewtask) - creates and starts a new [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) task
+8. [stoptasks](#stoptasks) - stops all active [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) tasks
+9. [taskinfo](#taskinfo) - prints the attribute of a [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) task
  
 ## Installation
 You need to first [install Babashka](https://github.com/babashka/babashka#quickstart). 
@@ -53,6 +54,13 @@ keepbooks -f 2023.ledger -d 2023/07/20 Sushi Bar Expenses:Restaurant Assets:Bank
 ### [on-modify-log](./on-modify-log.clj)
 A [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) hook to log latest modified task. This script is _not_ installed in `~/.local/bin`. Instead, it requires you to copy it to your Taskwarrior's hooks folder. This is usually `~/.task/hooks`. Every time a task is modified, it writed the UUID of the task in a file called `last-modified.data` in your Taskwarrior's `data.location`. **This hook is required for the [resumetask](#resumetask) script to work.**
 
+### [projectsof](./projectsof.clj)
+Searches the current working directory for project directories of a certain type. For example, calling `projectsof java` will return all the directories which are java projects. 
+
+#### Currently supported project types
+1. Java
+
+
 ### [resumetask](./resumetask.clj)
 Ever wanted to just restart the [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) task you stopped right before a break? With this script, you can just pick up where you left off by calling `resumetask`. No more trying to figure what ID your task has! **This script requires the [on-modify-log](#on-modify-log) hook to work and the [taskinfo](#taskinfo) script to work.**
 
@@ -91,3 +99,4 @@ The [resumetask](#resumetask) script depends on this script.
 - [a7c0817](https://github.com/somecho/utility-scripts/commit/a7c081747dc0ec4404f6a17dc3f9141316cdc534) - added [on-modify-log](./on-modify-log.clj) Taskwarrior hook, [resumetask](./resumetask.clj) and updated [install](./install.clj) script
 - [f2b0214](https://github.com/somecho/utility-scripts/commit/f2b021434554a3491c5cf07aced3a33479e662d1) - added [taskinfo](./taskinfo.clj) 
 - [e725018](https://github.com/somecho/utility-scripts/commit/e7250185cc92cb0d2626b0048817ccd8a4e3cb5d) - added [jrun](./jrun.clj)
+- [fd7b165](https://github.com/somecho/utility-scripts/commit/fd7b165136f06fcd8c018401942c008ba0a261da) - added [projectsof](./projectsof.clj)
