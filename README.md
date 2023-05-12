@@ -3,15 +3,16 @@
 Here are some utility scripts I wrote for myself. At first I wrote the scripts in a shell scripting language. But then I discovered [Babashka](https://github.com/babashka/babashka) and I love Clojure. I decided to port all the scripts to Clojure instead. You will need [Babashka](https://github.com/babashka/babashka) to run these scripts. These are helper tools for [Clj](https://clojure.org/guides/deps_and_cli), Java, [Ledger](https://github.com/ledger/ledger) and [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior).
 
 ### [Scripts](#scripts) included:
-1. [cljminimal](#cljminimal) - creates an ultra barebones deps.edn [clj](https://clojure.org/guides/deps_and_cli) project for quick hacking
-2. [jrun](#jrun) - single file Java runner 
-3. [keepbooks](#keepbooks) - simple transaction entry helper for [Ledger](https://github.com/ledger/ledger) CLI accounting. Supports interactive entry.
-4. [on-modify-log](#on-modify-log) - a [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) hook to log the latest modified task
-5. [projectsof](#projectsof) - finds directories of certain project types
-6. [resumetask](#resumetask) - resumes latest modified [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) task
-7. [startnewtask](#startnewtask) - creates and starts a new [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) task
-8. [stoptasks](#stoptasks) - stops all active [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) tasks
-9. [taskinfo](#taskinfo) - prints the attribute of a [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) task
+1. [accountsof](#accountsof) - outputs the name of all accounts used in a [Ledger](https://github.com/ledger/ledger) journal file
+2. [cljminimal](#cljminimal) - creates an ultra barebones deps.edn [clj](https://clojure.org/guides/deps_and_cli) project for quick hacking
+3. [jrun](#jrun) - single file Java runner 
+4. [keepbooks](#keepbooks) - simple transaction entry helper for [Ledger](https://github.com/ledger/ledger) CLI accounting. Supports interactive entry.
+5. [on-modify-log](#on-modify-log) - a [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) hook to log the latest modified task
+6. [projectsof](#projectsof) - finds directories of certain project types
+7. [resumetask](#resumetask) - resumes latest modified [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) task
+8. [startnewtask](#startnewtask) - creates and starts a new [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) task
+9. [stoptasks](#stoptasks) - stops all active [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) tasks
+10. [taskinfo](#taskinfo) - prints the attribute of a [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) task
  
 ## Installation
 You need to first [install Babashka](https://github.com/babashka/babashka#quickstart). 
@@ -27,6 +28,9 @@ You need to first [install Babashka](https://github.com/babashka/babashka#quicks
  
 ## Scripts
  
+### [accountsof](./accountsof.clj)
+Outputs the names of all the accounts used in a [Ledger](https://github.com/ledger/ledger) journal file. Example: `accountsof LEDGERFILE`.
+
 ### [cljminimal](./cljminimal.clj)
 A script to create an ultraminimal clj project with an empty deps.edn and a singular hello world main function. To use, simply call `cljminimal my-minimal-clj-project` and a project called `my-minimal-clj-project` will be created for you. Mainly used for quick hacking and throwaway prototyping.
 
@@ -113,3 +117,4 @@ The [resumetask](#resumetask) script depends on this script.
 - [fd7b165](../../commit/fd7b165136f06fcd8c018401942c008ba0a261da) - added [projectsof](./projectsof.clj)
 - [371c1ea](../../commit/371c1ea57bf5ebf3da98423552edba18d66f6957) - added clj to [projectsof](./projectsof.clj) and numbered output
 - [00520bf](../../commit/00520bf253a05fdcd2253c10b61be33b4c363cfa) - implemented feature [#3](../../issues/3) interactive entry to [keepbooks](./keepbooks.clj)
+- [f5ceb36](../../commit/f5ceb365150694ab86475a344da9c16946852b90) - added [accountsof](./accountsof.clj) 
