@@ -57,9 +57,13 @@ A [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) hook to log
 ### [projectsof](./projectsof.clj)
 Searches the current working directory for project directories of a certain type. For example, calling `projectsof java` will return all the directories which are java projects. **Requires [`rg`](https://github.com/BurntSushi/ripgrep) to run.**
 
-#### Currently supported project types
-1. Java
+#### Flags
+- `-n` - displays numbered rows
+- `-i NUMBER` - outputs directory with line number `-i`
 
+#### Currently supported project types
+1. Clojure/Clj
+2. Java
 
 ### [resumetask](./resumetask.clj)
 Ever wanted to just restart the [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) task you stopped right before a break? With this script, you can just pick up where you left off by calling `resumetask`. No more trying to figure what ID your task has! **This script requires the [on-modify-log](#on-modify-log) hook to work and the [taskinfo](#taskinfo) script to work.**
@@ -100,3 +104,4 @@ The [resumetask](#resumetask) script depends on this script.
 - [f2b0214](../../commit/f2b021434554a3491c5cf07aced3a33479e662d1) - added [taskinfo](./taskinfo.clj) 
 - [e725018](../../commit/e7250185cc92cb0d2626b0048817ccd8a4e3cb5d) - added [jrun](./jrun.clj)
 - [fd7b165](../../commit/fd7b165136f06fcd8c018401942c008ba0a261da) - added [projectsof](./projectsof.clj)
+- [371c1ea](../../commit/371c1ea57bf5ebf3da98423552edba18d66f6957) - added clj to [projectsof](./projectsof.clj) and numbered output
