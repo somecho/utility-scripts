@@ -55,7 +55,7 @@ keepbooks -f 2023.ledger -d 2023/07/20 Sushi Bar Expenses:Restaurant Assets:Bank
 A [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) hook to log latest modified task. This script is _not_ installed in `~/.local/bin`. Instead, it requires you to copy it to your Taskwarrior's hooks folder. This is usually `~/.task/hooks`. Every time a task is modified, it writed the UUID of the task in a file called `last-modified.data` in your Taskwarrior's `data.location`. **This hook is required for the [resumetask](#resumetask) script to work.**
 
 ### [projectsof](./projectsof.clj)
-Searches the current working directory for project directories of a certain type. For example, calling `projectsof java` will return all the directories which are java projects. 
+Searches the current working directory for project directories of a certain type. For example, calling `projectsof java` will return all the directories which are java projects. **Requires [`rg`](https://github.com/BurntSushi/ripgrep) to run.**
 
 #### Currently supported project types
 1. Java

@@ -20,6 +20,6 @@
     "java" (find-java-projects)
     (println "Project type not supported")))
 
+(try (sh "rg") (catch Exception _ (println "rg is not installed")))
+
 (assign (first *command-line-args*))
-
-
