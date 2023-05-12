@@ -1,0 +1,19 @@
+# Change log
+- [584d3d0](../../commit/584d3d04b3d9d2a9d1fdd79789e7c4908daa40be) - added [create-clj-minimal](../41de9d4fd0103c7b1cefa4b47439054353a59a91/create-clj-minimal) shell script
+- [4b8c492](../../commit/4b8c492ecd1725646dbff502a19a77cc73c52747) - added [stoptasks](../41de9d4fd0103c7b1cefa4b47439054353a59a91/stoptasks) shell script
+- [41de9d4](../../commit/41de9d4fd0103c7b1cefa4b47439054353a59a91) - added [starttasks](../41de9d4fd0103c7b1cefa4b47439054353a59a91/starttask) shell script
+- [8bd623e](../../commit/8bd623ef16068c4ed0ece1d1df32ed6bb0b210b8) - ported [create-clj-minimal](../41de9d4fd0103c7b1cefa4b47439054353a59a91/create-clj-minimal) to Clojure. It is now called [cljminimal](./cljminimal.clj)
+- [3a57c9a](../../commit/3a57c9abac263ceea7add9513b70868862b98d1d) - ported [starttasks](../41de9d4fd0103c7b1cefa4b47439054353a59a91/starttask) to Clojure. It is now called [startnewtask](./startnewtask.clj)
+- [e610b0b](../../commit/e610b0b5c82580de74f6ccb644e9e092f9f7e130) - ported [stoptasks](./stoptasks.clj) to Clojure.
+- [80e3f79](../../commit/80e3f792e56c5b620fa5ff1a6493c8b913188df7) - added [install](./install.clj) script
+- [2ec63e7](../../commit/2ec63e7e77a2adb9f3b2e22090f85a911868f238) - added [uninstall](../2ec63e7e77a2adb9f3b2e22090f85a911868f238/uninstall-some-utils.clj) script
+- [f1d42f7](../../commit/f1d42f7bc172d9ffdf51419d17b5d7792dabe70e) - removed the [uninstall](../2ec63e7e77a2adb9f3b2e22090f85a911868f238/uninstall-some-utils.clj) script in favor of a programmatically created uninstall script. Installing these scripts now automatically creates `uninstall-some-scripts`.
+- [a020b2a](../../commit/a020b2aba3fdbcc132e53df2b4859d5aab88e9f1) - added [keepbooks](./keepbooks.clj)
+- [2d46c23](../../commit/2d46c233a158950a3b2860f405a7dfb81484e06e) - fix [#1](../../issues/1)
+- [a7c0817](../../commit/a7c081747dc0ec4404f6a17dc3f9141316cdc534) - added [on-modify-log](./on-modify-log.clj) Taskwarrior hook, [resumetask](./resumetask.clj) and updated [install](./install.clj) script
+- [f2b0214](../../commit/f2b021434554a3491c5cf07aced3a33479e662d1) - added [taskinfo](./taskinfo.clj) 
+- [e725018](../../commit/e7250185cc92cb0d2626b0048817ccd8a4e3cb5d) - added [jrun](./jrun.clj)
+- [fd7b165](../../commit/fd7b165136f06fcd8c018401942c008ba0a261da) - added [projectsof](./projectsof.clj)
+- [371c1ea](../../commit/371c1ea57bf5ebf3da98423552edba18d66f6957) - added clj to [projectsof](./projectsof.clj) and numbered output
+- [00520bf](../../commit/00520bf253a05fdcd2253c10b61be33b4c363cfa) - implemented feature [#3](../../issues/3) interactive entry to [keepbooks](./keepbooks.clj)
+- [f5ceb36](../../commit/f5ceb365150694ab86475a344da9c16946852b90) - [2.7.0](../../releases/tags/2.7.0) added [accountsof](./accountsof.clj) 
