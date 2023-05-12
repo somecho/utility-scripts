@@ -108,9 +108,87 @@
     (spit path entry :append true)
     (println entry)))
 
+(defn prompt
+  "Reads user input and validates it. If input is invalid, 
+  prompts again."
+  [validate-fn validatee error-msg prompt-fn]
+  (try (validate-fn @validatee)
+       (catch Exception _ (do
+                            (println error-msg)
+                            (reset! validatee (prompt-fn))))))
+(defn prompt-date []
+  (println "Date (leave blank for today):")
+  (let [date (atom nil)]
+    (reset! date (read-line))
+    (if (empty? @date)
+      (reset! date (today))
+      (prompt validate-date date "Invalid date\n" prompt-date))
+    @date))
+
+(defn prompt-payee []
+  (println "Payee:")
+  (let [payee (atom nil)]
+    (reset! payee (read-line))
+    (prompt validate-string payee "Field cannot contain ; character" prompt-payee)
+    @payee))
+
+(defn prompt-account [account-msg]
+  (println account-msg)
+  (let [acct (atom nil)]
+    (reset! acct (read-line))
+    (prompt validate-string
+            acct
+            "Field cannot contain ; character"
+            #(prompt-account "Account to debit:"))
+    @acct))
+
+(defn prompt-amount []
+  (println "Ammount (without currency):")
+  (let [amt (atom nil)]
+    (reset! amt (read-line))
+    (prompt validate-amount amt "Invalid amount" prompt-amount)
+    @amt))
+
+(defn prompt-currency []
+  (println "Currency:")
+  (let [currency (atom nil)]
+    (reset! currency (read-line))
+    (prompt validate-string
+            currency
+            "Field cannot contain ; character"
+            prompt-currency)
+    @currency))
+
+(defn affirmative? [s]
+  (case s
+    "" true
+    "y" true
+    "yes" true
+    false))
+
+(defn interactive-txn [parsed-args]
+  (let [date (prompt-date)
+        payee (prompt-payee)
+        debit (prompt-account "Account to debit:")
+        credit (prompt-account "Account to credit:")
+        amount (prompt-amount)
+        currency (prompt-currency)
+        path (:filepath (:opts parsed-args))
+        entry (build-entry {:date date
+                            :payee (str/split payee #" ")
+                            :debit debit
+                            :credit credit
+                            :amount amount
+                            :currency currency})]
+    (spit path entry :append true)
+    (println entry "\n")
+    (println "Make another entry? (y/n)")
+    (when (affirmative? (str/lower-case (read-line)))
+      (interactive-txn parsed-args))))
+
 ; entry point
 (let [parsed (cli/parse-args *command-line-args* spec)]
   (cond
     (single-entry? parsed) (single-entry-txn parsed)
     (batch? parsed) (println "batch-entry coming soon!")
-    (interactive? parsed) (println "interactive entry coming soon!")))
+    (interactive? parsed) (interactive-txn parsed)))
