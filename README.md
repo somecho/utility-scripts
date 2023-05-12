@@ -5,7 +5,7 @@ Here are some utility scripts I wrote for myself. At first I wrote the scripts i
 ### [Scripts](#scripts) included:
 1. [cljminimal](#cljminimal) - creates an ultra barebones deps.edn [clj](https://clojure.org/guides/deps_and_cli) project for quick hacking
 2. [jrun](#jrun) - single file Java runner 
-3. [keepbooks](#keepbooks) - simple transaction entry helper for [Ledger](https://github.com/ledger/ledger) CLI accounting
+3. [keepbooks](#keepbooks) - simple transaction entry helper for [Ledger](https://github.com/ledger/ledger) CLI accounting. Supports interactive entry.
 4. [on-modify-log](#on-modify-log) - a [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) hook to log the latest modified task
 5. [projectsof](#projectsof) - finds directories of certain project types
 6. [resumetask](#resumetask) - resumes latest modified [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) task
@@ -39,7 +39,10 @@ jrun JAVAFILE
 The `JAVAFILE` argument is glob-searched, so you can use `App.java` or `App` and it will still run.
 
 ### [keepbooks](./keepbooks.clj)
-A helper script to enter a simple transaction into a [Ledger](https://github.com/ledger/ledger) file. The script has the following format:
+A helper script to enter a simple transaction into a [Ledger](https://github.com/ledger/ledger) file. 
+
+#### Single entry mode
+The script has the following format in single entry mode:
 ```sh
 keepbooks -f LEDGERFILE -d DATE PAYEE? ACCOUNT_TO_DEBIT ACCOUNT_TO_CREDIT AMOUNT CURRENCY
 ```
@@ -51,6 +54,10 @@ keepbooks -f 2023.ledger -d 2023/07/20 Sushi Bar Expenses:Restaurant Assets:Bank
 #   Expenses:Restaurant                       30.00 EUR
 #   Assets:Bank
 ```
+
+#### Interactive mode
+`keepbooks` also supports interactive entry. Simply call `keepbooks -f LEDGERFILE` without any arguments and you will be prompted to enter your transaction.
+
 ### [on-modify-log](./on-modify-log.clj)
 A [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) hook to log latest modified task. This script is _not_ installed in `~/.local/bin`. Instead, it requires you to copy it to your Taskwarrior's hooks folder. This is usually `~/.task/hooks`. Every time a task is modified, it writed the UUID of the task in a file called `last-modified.data` in your Taskwarrior's `data.location`. **This hook is required for the [resumetask](#resumetask) script to work.**
 
@@ -105,3 +112,4 @@ The [resumetask](#resumetask) script depends on this script.
 - [e725018](../../commit/e7250185cc92cb0d2626b0048817ccd8a4e3cb5d) - added [jrun](./jrun.clj)
 - [fd7b165](../../commit/fd7b165136f06fcd8c018401942c008ba0a261da) - added [projectsof](./projectsof.clj)
 - [371c1ea](../../commit/371c1ea57bf5ebf3da98423552edba18d66f6957) - added clj to [projectsof](./projectsof.clj) and numbered output
+- [00520bf](../../commit/00520bf253a05fdcd2253c10b61be33b4c363cfa) - implemented feature [#3](../../issues/3) interactive entry to [keepbooks](./keepbooks.clj)
