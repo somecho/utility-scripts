@@ -17,3 +17,4 @@
 - [371c1ea](../../commit/371c1ea57bf5ebf3da98423552edba18d66f6957) - added clj to [projectsof](./projectsof.clj) and numbered output
 - [00520bf](../../commit/00520bf253a05fdcd2253c10b61be33b4c363cfa) - implemented feature [#3](../../issues/3) interactive entry to [keepbooks](./keepbooks.clj)
 - [f5ceb36](../../commit/f5ceb365150694ab86475a344da9c16946852b90) - [2.7.0](../../releases/tag/2.7.0) added [accountsof](./accountsof.clj) 
+- [8cf25a2](../../commit/8cf25a240790e93bef0b53e40dcb4131e9677106) - [2.8.0](../../releases/tag/2.8.0) added [depo](./depo.clj)
