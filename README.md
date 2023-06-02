@@ -5,14 +5,15 @@ Here are some utility scripts I wrote for myself. At first I wrote the scripts i
 ### [Scripts](#scripts) included:
 1. [accountsof](#accountsof) - outputs the name of all accounts used in a [Ledger](https://github.com/ledger/ledger) journal file
 2. [cljminimal](#cljminimal) - creates an ultra barebones deps.edn [clj](https://clojure.org/guides/deps_and_cli) project for quick hacking
-3. [jrun](#jrun) - single file Java runner 
-4. [keepbooks](#keepbooks) - simple transaction entry helper for [Ledger](https://github.com/ledger/ledger) CLI accounting. Supports interactive entry.
-5. [on-modify-log](#on-modify-log) - a [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) hook to log the latest modified task
-6. [projectsof](#projectsof) - finds directories of certain project types
-7. [resumetask](#resumetask) - resumes latest modified [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) task
-8. [startnewtask](#startnewtask) - creates and starts a new [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) task
-9. [stoptasks](#stoptasks) - stops all active [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) tasks
-10. [taskinfo](#taskinfo) - prints the attribute of a [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) task
+3. [depo](#depo) - adds dependencies to Clojure projects. Supports `deps.edn`,`project.clj`,`shadow-cljs.edn`.
+4. [jrun](#jrun) - single file Java runner 
+5. [keepbooks](#keepbooks) - simple transaction entry helper for [Ledger](https://github.com/ledger/ledger) CLI accounting. Supports interactive entry.
+6. [on-modify-log](#on-modify-log) - a [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) hook to log the latest modified task
+7. [projectsof](#projectsof) - finds directories of certain project types
+8. [resumetask](#resumetask) - resumes latest modified [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) task
+9. [startnewtask](#startnewtask) - creates and starts a new [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) task
+10. [stoptasks](#stoptasks) - stops all active [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) tasks
+11. [taskinfo](#taskinfo) - prints the attribute of a [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) task
  
 ## Installation
 You need to first [install Babashka](https://github.com/babashka/babashka#quickstart). 
@@ -33,6 +34,24 @@ Outputs the names of all the accounts used in a [Ledger](https://github.com/ledg
 
 ### [cljminimal](./cljminimal.clj)
 A script to create an ultraminimal clj project with an empty deps.edn and a singular hello world main function. To use, simply call `cljminimal my-minimal-clj-project` and a project called `my-minimal-clj-project` will be created for you. Mainly used for quick hacking and throwaway prototyping.
+
+### [depo](./depo.clj)
+Adds dependencies to Clojure projects. To use, run the script at the root of a project containing a `deps.edn`, `project.clj` or `shadow-cljs.edn` file. If multiple config files are present, the first config file in the order of `deps`,`project`,`shadow-cljs` will be selected. 
+#### Usage
+```sh
+depo add reagent
+# Added [reagent "1.2.0"]
+```
+If multiple config files are present, you can use `-f` to specify which file to add a dependency to.
+```sh
+depo add reagent -f deps.edn
+# Added {reagent/reagent {:mvn/version 1.2.0}}
+```
+You can also specify a version.
+```sh
+depo add reagent 1.1.0
+# Added [reagent "1.1.0"]
+```
 
 ### [jrun](./jrun.clj)
 Compiles and runs a single java file. Mainly used for quick iteration of ideas. For example, you can run it in Vim with `:!jrun App.java` and see the output in a Vim buffer without leaving your current buffer.
