@@ -52,6 +52,7 @@ You can also specify a version.
 depo add reagent 1.1.0
 # Added [reagent "1.1.0"]
 ```
+Depo can currently only search for dependencies from Clojars. For a more powerful alternative, checkout [neil](https://github.com/babashka/neil).
 
 ### [jrun](./jrun.clj)
 Compiles and runs a single java file. Mainly used for quick iteration of ideas. For example, you can run it in Vim with `:!jrun App.java` and see the output in a Vim buffer without leaving your current buffer.
